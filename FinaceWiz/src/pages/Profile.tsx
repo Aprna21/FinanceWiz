@@ -25,6 +25,7 @@ const Profile: React.FC = () => {
   const navigate = useNavigate();
   
   const [isEditing, setIsEditing] = useState(false);
+  const [editingField, setEditingField] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -91,35 +92,6 @@ const Profile: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            {/* Header */}
-            <div className="flex justify-between items-center mb-8">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center">
-                  <User className="h-8 w-8 text-primary-600 mr-3" />
-                  My Profile
-                </h1>
-                <p className="text-gray-600">
-                  Manage your personal information and preferences
-                </p>
-              </div>
-              <button
-                onClick={() => setIsEditing(!isEditing)}
-                className={`flex items-center ${isEditing ? 'btn-secondary' : 'btn-primary'}`}
-              >
-                {isEditing ? (
-                  <>
-                    <X className="h-5 w-5 mr-2" />
-                    Cancel
-                  </>
-                ) : (
-                  <>
-                    <Edit className="h-5 w-5 mr-2" />
-                    Edit Profile
-                  </>
-                )}
-              </button>
-            </div>
-
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Profile Information */}
               <div className="lg:col-span-2 space-y-8">
@@ -128,97 +100,138 @@ const Profile: React.FC = () => {
                   <h2 className="text-xl font-bold text-gray-900 mb-6">Personal Information</h2>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Full Name */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Full Name
-                      </label>
-                      {isEditing ? (
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                      {editingField === 'name' ? (
                         <input
                           type="text"
                           value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          onChange={e => setFormData({ ...formData, name: e.target.value })}
+                          onBlur={() => setEditingField(null)}
+                          onKeyDown={e => { if (e.key === 'Enter') setEditingField(null); }}
                           className="input-field"
+                          autoFocus
+                          placeholder="Enter your name"
                         />
                       ) : (
-                        <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-xl">
+                        <div
+                          className="flex items-center space-x-2 p-3 bg-gray-50 rounded-xl cursor-pointer shadow-inner"
+                          onClick={() => setEditingField('name')}
+                          tabIndex={0}
+                        >
                           <User className="h-5 w-5 text-gray-400" />
-                          <span>{formData.name}</span>
+                          <span className={formData.name ? '' : 'text-gray-400'}>
+                            {formData.name || 'Enter your name'}
+                          </span>
                         </div>
                       )}
                     </div>
-
+                    {/* Email Address */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Email Address
-                      </label>
-                      {isEditing ? (
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                      {editingField === 'email' ? (
                         <input
                           type="email"
                           value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          onChange={e => setFormData({ ...formData, email: e.target.value })}
+                          onBlur={() => setEditingField(null)}
+                          onKeyDown={e => { if (e.key === 'Enter') setEditingField(null); }}
                           className="input-field"
+                          autoFocus
+                          placeholder="Enter your email"
                         />
                       ) : (
-                        <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-xl">
+                        <div
+                          className="flex items-center space-x-2 p-3 bg-gray-50 rounded-xl cursor-pointer shadow-inner"
+                          onClick={() => setEditingField('email')}
+                          tabIndex={0}
+                        >
                           <Mail className="h-5 w-5 text-gray-400" />
-                          <span>{formData.email}</span>
+                          <span className={formData.email ? '' : 'text-gray-400'}>
+                            {formData.email || 'Enter your email'}
+                          </span>
                         </div>
                       )}
                     </div>
-
+                    {/* Phone Number */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Phone Number
-                      </label>
-                      {isEditing ? (
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                      {editingField === 'phone' ? (
                         <input
                           type="tel"
                           value={formData.phone}
-                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                          onBlur={() => setEditingField(null)}
+                          onKeyDown={e => { if (e.key === 'Enter') setEditingField(null); }}
                           className="input-field"
+                          autoFocus
+                          placeholder="Enter your phone number"
                         />
                       ) : (
-                        <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-xl">
+                        <div
+                          className="flex items-center space-x-2 p-3 bg-gray-50 rounded-xl cursor-pointer shadow-inner"
+                          onClick={() => setEditingField('phone')}
+                          tabIndex={0}
+                        >
                           <Phone className="h-5 w-5 text-gray-400" />
-                          <span>{formData.phone}</span>
+                          <span className={formData.phone ? '' : 'text-gray-400'}>
+                            {formData.phone || 'Enter your phone number'}
+                          </span>
                         </div>
                       )}
                     </div>
-
+                    {/* Date of Birth */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Date of Birth
-                      </label>
-                      {isEditing ? (
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
+                      {editingField === 'dateOfBirth' ? (
                         <input
                           type="date"
                           value={formData.dateOfBirth}
-                          onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
+                          onChange={e => setFormData({ ...formData, dateOfBirth: e.target.value })}
+                          onBlur={() => setEditingField(null)}
+                          onKeyDown={e => { if (e.key === 'Enter') setEditingField(null); }}
                           className="input-field"
+                          autoFocus
+                          placeholder="Enter your date of birth"
                         />
                       ) : (
-                        <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-xl">
+                        <div
+                          className="flex items-center space-x-2 p-3 bg-gray-50 rounded-xl cursor-pointer shadow-inner"
+                          onClick={() => setEditingField('dateOfBirth')}
+                          tabIndex={0}
+                        >
                           <Calendar className="h-5 w-5 text-gray-400" />
-                          <span>{new Date(formData.dateOfBirth).toLocaleDateString()}</span>
+                          <span className={formData.dateOfBirth ? '' : 'text-gray-400'}>
+                            {formData.dateOfBirth || 'Enter your date of birth'}
+                          </span>
                         </div>
                       )}
                     </div>
-
+                    {/* Address */}
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Address
-                      </label>
-                      {isEditing ? (
-                        <textarea
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                      {editingField === 'address' ? (
+                        <input
+                          type="text"
                           value={formData.address}
-                          onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                          onChange={e => setFormData({ ...formData, address: e.target.value })}
+                          onBlur={() => setEditingField(null)}
+                          onKeyDown={e => { if (e.key === 'Enter') setEditingField(null); }}
                           className="input-field"
-                          rows={3}
+                          autoFocus
+                          placeholder="Enter your address"
                         />
                       ) : (
-                        <div className="flex items-start space-x-2 p-3 bg-gray-50 rounded-xl">
-                          <MapPin className="h-5 w-5 text-gray-400 mt-0.5" />
-                          <span>{formData.address}</span>
+                        <div
+                          className="flex items-center space-x-2 p-3 bg-gray-50 rounded-xl cursor-pointer shadow-inner"
+                          onClick={() => setEditingField('address')}
+                          tabIndex={0}
+                        >
+                          <MapPin className="h-5 w-5 text-gray-400" />
+                          <span className={formData.address ? '' : 'text-gray-400'}>
+                            {formData.address || 'Enter your address'}
+                          </span>
                         </div>
                       )}
                     </div>
@@ -235,50 +248,60 @@ const Profile: React.FC = () => {
                 </div>
 
                 {/* Tax Information */}
-                <div className="card p-8">
-                  <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                    <Shield className="h-5 w-5 text-primary-600 mr-2" />
-                    Tax Information
-                  </h2>
-                  
+                <div className="card p-8 mt-8">
+                  <h2 className="text-xl font-bold text-gray-900 mb-6">Tax Information</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* PAN Card Number */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        PAN Card Number
-                      </label>
-                      {isEditing ? (
+                      <label className="block text-sm font-medium text-gray-700 mb-2">PAN Card Number</label>
+                      {editingField === 'panCard' ? (
                         <input
                           type="text"
                           value={formData.panCard}
-                          onChange={(e) => setFormData({ ...formData, panCard: e.target.value.toUpperCase() })}
+                          onChange={e => setFormData({ ...formData, panCard: e.target.value })}
+                          onBlur={() => setEditingField(null)}
+                          onKeyDown={e => { if (e.key === 'Enter') setEditingField(null); }}
                           className="input-field"
-                          placeholder="ABCDE1234F"
-                          maxLength={10}
+                          autoFocus
+                          placeholder="Enter your PAN card number"
                         />
                       ) : (
-                        <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-xl">
+                        <div
+                          className="flex items-center space-x-2 p-3 bg-gray-50 rounded-xl cursor-pointer shadow-inner"
+                          onClick={() => setEditingField('panCard')}
+                          tabIndex={0}
+                        >
                           <CreditCard className="h-5 w-5 text-gray-400" />
-                          <span>{formData.panCard}</span>
+                          <span className={formData.panCard ? '' : 'text-gray-400'}>
+                            {formData.panCard || 'Enter your PAN card number'}
+                          </span>
                         </div>
                       )}
                     </div>
-
+                    {/* Aadhaar Number */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Aadhaar Number
-                      </label>
-                      {isEditing ? (
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Aadhaar Number</label>
+                      {editingField === 'aadhaarCard' ? (
                         <input
                           type="text"
                           value={formData.aadhaarCard}
-                          onChange={(e) => setFormData({ ...formData, aadhaarCard: e.target.value })}
+                          onChange={e => setFormData({ ...formData, aadhaarCard: e.target.value })}
+                          onBlur={() => setEditingField(null)}
+                          onKeyDown={e => { if (e.key === 'Enter') setEditingField(null); }}
                           className="input-field"
-                          placeholder="1234-5678-9012"
+                          autoFocus
+                          placeholder="Enter your Aadhaar number"
                         />
                       ) : (
-                        <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-xl">
+                        <div
+                          className="flex items-center space-x-2 p-3 bg-gray-50 rounded-xl cursor-pointer shadow-inner"
+                          onClick={() => setEditingField('aadhaarCard')}
+                          tabIndex={0}
+                        >
                           <Shield className="h-5 w-5 text-gray-400" />
-                          <span>{formData.aadhaarCard}</span>
+                          <span className={formData.aadhaarCard ? '' : 'text-gray-400'}>
+                            {formData.aadhaarCard || 'Enter your Aadhaar number'}
+                          </span>
                         </div>
                       )}
                     </div>

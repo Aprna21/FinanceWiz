@@ -4,11 +4,8 @@ import { motion } from 'framer-motion';
 import { 
   TrendingUp, 
   Users, 
-  Calculator, 
   Target,
-  Award,
   Zap,
-  Calendar,
   ChevronRight
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
@@ -16,27 +13,60 @@ import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 
 const Dashboard: React.FC = () => {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user) {
+    if (!isLoading && !user) {
       navigate('/login');
     }
-  }, [user, navigate]);
+  }, [user, isLoading, navigate]);
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-black">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-pink-500"></div>
+      </div>
+    );
+  }
 
   if (!user) return null;
 
-  const quickActions = [];
-  const achievements = [];
+  // Define types for quickActions and achievements
+  type QuickAction = {
+    icon: React.ElementType;
+    path: string;
+    color: string;
+    title: string;
+    description: string;
+  };
+  type Achievement = {
+    icon: React.ElementType;
+    title: string;
+    description: string;
+    earned: boolean;
+  };
+
+  const quickActions: QuickAction[] = [];
+  const achievements: Achievement[] = [];
 
   return (
-    <div className="flex bg-gray-50 min-h-screen">
+    <div className="flex min-h-screen relative overflow-hidden">
+      {/* Professional Animated Background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 animate-gradient-move"></div>
+        {/* Subtle geometric shapes */}
+        <div className="absolute top-20 left-20 w-64 h-64 bg-blue-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float"></div>
+        <div className="absolute top-40 right-20 w-64 h-64 bg-indigo-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute -bottom-8 left-20 w-64 h-64 bg-slate-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float" style={{ animationDelay: '4s' }}></div>
+        {/* Professional grid pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:40px_40px] opacity-20"></div>
+        {/* Subtle lines */}
+        <svg className="absolute left-0 top-1/2 w-full h-8 opacity-5 animate-wave-move" viewBox="0 0 1440 80"><path fill="#fff" fillOpacity="0.3" d="M0,40 Q360,80 720,40 T1440,40 V80 H0Z"/></svg>
+      </div>
       <Sidebar />
-      
-      <div className="flex-1">
+      <div className="flex-1 relative z-10">
         <Navbar />
-        
         <div className="p-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -44,11 +74,11 @@ const Dashboard: React.FC = () => {
             transition={{ duration: 0.6 }}
           >
             {/* Welcome Section */}
-            <div className="mb-8">
-              <p className="text-gray-600">
-                Let's start optimizing your taxes and maximizing your savings.
-              </p>
+            <div className="mb-8 text-center">
+              <p className="text-pink-100 text-lg font-medium">Let's start optimizing your taxes and maximizing your savings.</p>
             </div>
+            {/* Feature Cards */}
+            {/* All feature cards removed as requested */}
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

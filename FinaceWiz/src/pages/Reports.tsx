@@ -276,6 +276,9 @@ const Reports: React.FC = () => {
     </div>
   );
 
+  // Replace the year options with a wider range
+  const yearOptions = Array.from({ length: 10 }, (_, i) => (2024 - i).toString());
+
   return (
     <div className="flex bg-gray-50 min-h-screen">
       <Sidebar />
@@ -322,11 +325,11 @@ const Reports: React.FC = () => {
                   <select
                     value={selectedYear}
                     onChange={(e) => setSelectedYear(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-3 py-2"
+                    className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-400"
                   >
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
-                    <option value="2022">2022</option>
+                    {yearOptions.map(year => (
+                      <option key={year} value={year}>{year}</option>
+                    ))}
                   </select>
                 </div>
 

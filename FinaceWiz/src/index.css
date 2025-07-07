@@ -11,19 +11,38 @@
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+  
+  /* Professional theme variables */
+  :root {
+    --professional-primary: #3b82f6;
+    --professional-secondary: #1d4ed8;
+    --professional-accent: #1e40af;
+    --professional-dark: #1e293b;
+    --professional-darker: #0f172a;
+    --professional-light: #f1f5f9;
+    --professional-lighter: #f8fafc;
+  }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl;
+    @apply bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-200/40 focus:outline-none focus:ring-2 focus:ring-blue-400/60 border-none;
   }
   
   .btn-secondary {
-    @apply bg-white border-2 border-purple-600 text-purple-600 hover:bg-purple-50 font-semibold py-3 px-6 rounded-xl transition-all duration-300;
+    @apply bg-gradient-to-r from-white via-blue-50 to-indigo-50 border-2 border-blue-400 text-blue-700 hover:bg-blue-50 font-bold py-3 px-6 rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-200/60;
   }
   
   .card {
-    @apply bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100;
+    @apply bg-white rounded-2xl shadow-lg transition-all duration-300 border border-gray-100;
+    transition: box-shadow 0.2s, transform 0.2s, filter 0.2s;
+  }
+  .card:hover {
+    box-shadow: 0 8px 32px 0 rgba(59,130,246,0.12);
+    filter: brightness(1.04);
+    transform: translateY(-4px) scale(1.03);
+    border-width: 3px;
+    border-color: #3b82f6;
   }
   
   .input-field {
@@ -31,7 +50,7 @@
   }
   
   .gradient-bg {
-    background: linear-gradient(135deg, #ead466 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
   }
   
   .glass-morphism {
@@ -49,14 +68,20 @@
       linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
     background-size: 50px 50px;
   }
+
+  .sidebar-pro-gradient {
+    background: linear-gradient(180deg, #1e293b 0%, #334155 60%, #475569 100%);
+    animation: animate-gradient 12s ease-in-out infinite;
+    background-size: 200% 200%;
+  }
 }
 
 .hero-gradient {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
 }
 
 .sidebar-gradient {
-  background: linear-gradient(180deg, #15c975 0%, #1e40af 100%);
+  background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
 }
 
 @keyframes float {
@@ -70,4 +95,160 @@
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+/* Welcome video page styles */
+.welcome-video-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+}
+
+.welcome-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.welcome-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 41, 59, 0.8) 0%,
+    rgba(51, 65, 85, 0.6) 50%,
+    rgba(71, 85, 105, 0.8) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.welcome-content {
+  text-align: center;
+  color: white;
+  max-width: 600px;
+  padding: 2rem;
+  animation: fadeInUp 1.5s ease-out;
+}
+
+.welcome-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8, #1e40af);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease-in-out infinite;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-subtitle {
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: #f1f5f9;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  animation: fadeInUp 1.5s ease-out 0.5s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Responsive design for welcome page */
+@media (max-width: 768px) {
+  .welcome-title {
+    font-size: 2.5rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1rem;
+  }
+  
+  .welcome-content {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-title {
+    font-size: 2rem;
+  }
+  
+  .welcome-subtitle {
+    font-size: 0.9rem;
+  }
+}
+
+button, .btn-primary, .btn-secondary {
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+
+button:hover, .btn-primary:hover, .btn-secondary:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 4px 16px 0 rgba(59, 130, 246, 0.10);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(90deg, #e0e7ef 0%, #c7d2fe 100%);
+  color: #1e40af;
+}
+
+.animated-gradient-text {
+  background: linear-gradient(90deg, #a5d8ff, #3b82f6, #1d4ed8, #1e293b, #3b82f6, #a5d8ff);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: animated-gradient-move 4s ease-in-out infinite;
+  font-weight: 900;
+}
+
+@keyframes animated-gradient-move {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.beautiful-italic {
+  font-style: italic;
+  font-family: 'Caveat', 'Pacifico', 'Dancing Script', 'Segoe Script', 'Comic Sans MS', cursive, sans-serif;
+  letter-spacing: 2px;
 }

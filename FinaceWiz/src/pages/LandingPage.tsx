@@ -1,103 +1,74 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { 
-  Zap, 
-  TrendingUp, 
-  Shield, 
-  Users, 
-  Calculator, 
-  Target,
-  CheckCircle,
-  Star,
-  ArrowRight
-} from 'lucide-react';
-import Navbar from '../components/Navbar';
+import React, { useRef, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LandingPage: React.FC = () => {
-  const features = [
-    {
-      icon: Calculator,
-      title: 'Smart Tax Calculator',
-      description: 'Advanced algorithms to minimize your tax burden legally'
-    },
-    {
-      icon: Users,
-      title: 'Family Planning',
-      description: 'Optimize taxes for your entire family with smart planning'
-    },
-    {
-      icon: Target,
-      title: 'Savings Goals',
-      description: 'Set and achieve ambitious savings targets with gamification'
-    },
-    {
-      icon: Shield,
-      title: 'Legal Compliance',
-      description: 'All strategies are 100% legal and government compliant'
-    },
-    {
-      icon: TrendingUp,
-      title: 'Wealth Growth',
-      description: 'Turn saved taxes into long-term wealth building'
-    },
-    {
-      icon: Zap,
-      title: 'Maximum Savings',
-      description: 'Save up to 60-70% on your annual tax liability'
-    }
-  ];
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const navigate = useNavigate();
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
-  const testimonials = [
-    {
-      name: 'Rajesh Kumar',
-      role: 'Software Engineer',
-      content: 'Reduced my tax from ₹1,00,000 to just ₹35,000! Amazing platform.',
-      rating: 5
-    },
-    {
-      name: 'Priya Sharma',
-      role: 'Business Owner',
-      content: 'Perfect for family tax planning. Saved over ₹2 lakhs this year.',
-      rating: 5
-    },
-    {
-      name: 'Amit Patel',
-      role: 'Student',
-      content: 'Great for students and families. Easy to use and very effective.',
-      rating: 5
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      // Handle video end event
+      const handleVideoEnd = () => {
+        navigate('/login');
+      };
+
+      // Handle video load event
+      const handleVideoLoad = () => {
+        setIsVideoLoaded(true);
+      };
+
+      video.addEventListener('ended', handleVideoEnd);
+      video.addEventListener('loadeddata', handleVideoLoad);
+
+      // Start playing the video
+      video.play().catch(error => {
+        console.error('Error playing video:', error);
+        // If video fails to play, redirect to login after a delay
+        setTimeout(() => navigate('/login'), 2000);
+      });
+
+      return () => {
+        video.removeEventListener('ended', handleVideoEnd);
+        video.removeEventListener('loadeddata', handleVideoLoad);
+      };
     }
-  ];
+  }, [navigate]);
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
-      {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-        <div className="absolute inset-0">
-          {/* Floating orbs */}
-          <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
-          <div className="absolute top-40 right-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{ animationDelay: '4s' }}></div>
-          {/* Geometric shapes */}
-          <div className="absolute top-1/4 left-1/4 w-4 h-4 bg-white opacity-20 rotate-45 animate-pulse"></div>
-          <div className="absolute top-1/3 right-1/3 w-6 h-6 bg-yellow-400 opacity-30 rotate-12 animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute bottom-1/4 left-1/3 w-3 h-3 bg-pink-400 opacity-25 rotate-45 animate-pulse" style={{ animationDelay: '3s' }}></div>
-          {/* Grid pattern */}
-          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-        </div>
-      </div>
-      <div className="relative z-10 w-full flex flex-col items-center justify-center min-h-screen">
-        <div className="glass-morphism p-10 rounded-2xl max-w-md w-full mx-auto flex flex-col items-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 text-center">Welcome to FinanceWiz</h2>
-          <p className="text-blue-100 mb-8 text-center">Experience smarter tax optimization and maximize your savings with our AI-powered platform. Legal, smart, and incredibly effective.</p>
-          <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
-            <Link to="/login" className="btn-primary w-full sm:w-auto text-lg px-8 py-3 text-center">Login</Link>
-            <Link to="/signup" className="btn-secondary w-full sm:w-auto text-lg px-8 py-3 text-center">Sign Up</Link>
-            </div>
+    <div className="welcome-video-container">
+      {!isVideoLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white mx-auto mb-4"></div>
+            <p className="text-white text-lg font-semibold">Welcome to FinanceWiz</p>
+            <p className="text-gray-300 text-sm">Loading your financial journey...</p>
           </div>
+        </div>
+      )}
+      
+      <video
+        ref={videoRef}
+        className="welcome-video"
+        autoPlay
+        muted
+        playsInline
+        preload="auto"
+      >
+        <source src="/Finwiz.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      
+      {/* Welcome overlay */}
+      <div className="welcome-overlay">
+        <div className="welcome-content">
+          <h1 className="welcome-title animated-gradient-text italic beautiful-italic">FinanceWiz</h1>
+          <p className="welcome-subtitle">Your journey to financial freedom starts here</p>
+        </div>
       </div>
     </div>
   );
 };
 
-export default LandingPage;
+export default LandingPage; 

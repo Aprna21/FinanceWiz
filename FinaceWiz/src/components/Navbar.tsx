@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Zap, User, LogOut, PiggyBank } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const Navbar: React.FC = () => {
@@ -9,18 +9,11 @@ const Navbar: React.FC = () => {
   return (
     <nav className="bg-white shadow-lg border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <Link to={user ? "/dashboard" : "/"} className="flex items-center space-x-2">
-              <div className="p-2 rounded-xl" style={{ background: 'linear-gradient(135deg, #a855f7 0%, #3b82f6 100%)' }}>
-                <PiggyBank className="h-8 w-8 text-white" style={{ filter: 'drop-shadow(0 0 8px #a855f7)' }} />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                FinanceWiz
-              </span>
-            </Link>
+        <div className="flex items-center h-16">
+          <div className="flex items-center min-w-[220px]">
+            {/* Removed Finace Wiz logo/text */}
           </div>
-
+          <div className="flex-1"></div>
           <div className="flex items-center space-x-4">
             {user ? (
               <>
